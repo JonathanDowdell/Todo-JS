@@ -1,0 +1,30 @@
+.full-height {
+    height: 100vh;
+}
+
+.gone {
+    display: none;
+}
+
+.line-thru {
+    text-decoration: line-through;
+    color: #6c757d;
+}
+
+.btn-group .dropdown-toggle::after {
+    display: none;
+}
+
+.todo-body {
+    cursor: pointer;
+    -o-transition: .7s;
+    -ms-transition: .7s;
+    -moz-transition: .7s;
+    -webkit-transition: .7s;
+    transition:.7s;
+}
+
+.todo-body:hover {
+    text-decoration: line-through;
+    color: #6c757d;
+}
