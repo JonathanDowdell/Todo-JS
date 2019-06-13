@@ -1,10 +1,14 @@
 import { RegisterCard } from "./controller/RegisterCard";
+import { TodoController } from "./controller/TodoController";
 import { firebase } from "./networking/firebase";
+import { assignGlobalListeners } from "./utils/Listeners";
 
 export class Initializer {
     constructor() {
 
         const registerView = new RegisterCard();
+        const todoController = new TodoController();
+        assignGlobalListeners();
 
         firebase.auth().onAuthStateChanged(function (user) {
             if (user) {
