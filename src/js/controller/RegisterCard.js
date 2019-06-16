@@ -1,6 +1,7 @@
-import { signIn } from "../networking/firebase";
-import { register } from "../networking/firebase";
+import { signIn } from "../networking/FirebaseUtils";
+import { register } from "../networking/FirebaseUtils";
 import { BaseController } from "../controller/BaseController";
+
 export class RegisterCard extends BaseController {
 
     constructor() {

@@ -1,8 +1,14 @@
+import { BaseController } from './BaseController';
 import { TodoView } from "../view/TodoView";
 import { createUUID } from "../utils/UUID";
-export class TodoController {
+import { writeTodoToDatabase } from "../networking/FirebaseUtils";
+import { fetchDataFromDatabase } from "../networking/FirebaseUtils";
+
+export class TodoController extends BaseController {
 
     constructor() {
+        super();
+
         // Properties
         this.todoContainer = document.querySelector('.todo-main');
         this.todoInput = document.querySelector('.todo-input');
@@ -10,19 +16,42 @@ export class TodoController {
         this.cardList = document.querySelector('.card-list');
 
         // Methods
-        let addToDo = () => {
-            const todoValue = this.todoInput.value
-            const todoView = new TodoView({
-                todo: todoValue,
-                timestamp: Date.now(),
-                complete: false,
-                todoUUID: createUUID()
-            });
-            $(this.cardList).append(todoView.getHtml());
-            // this.cardList.appendChild()
+        this.fetchData = (user) => {
+            fetchDataFromDatabase(user)
         }
 
+        super.openView = (value) => {
+            if (value) {
+                this.todoContainer.classList.remove('d-none');
+                document.querySelector('.card-list').classList.remove('d-none');
+                document.querySelector('.navbar .navbar-brand').classList.remove('d-none');
+                document.querySelector('.navbar .navbar').classList.remove('d-none');
+            } else {
+                this.todoContainer.classList.add('d-none');
+                document.querySelector('.card-list').classList.add('d-none');
+                document.querySelector('.navbar .navbar-brand').classList.add('d-none');
+                document.querySelector('.navbar .navbar').classList.add('d-none');
+            }
+        }
+
+        const addToDo = () => {
+            const todoObj = {
+                todo: {
+                    value:this.todoInput.value
+                },
+                timestamp: {
+                    value:Date.now()
+                },
+                complete: {
+                    value:false
+                },
+                todoUUID: createUUID()
+            }
+            const todoView = new TodoView(todoObj);
+            $(this.cardList).prepend(todoView.getHtml());
+            writeTodoToDatabase(todoObj);
+            $(this.todoInput).val("");
+        }
         this.processInputBtn.addEventListener('click', addToDo)
     }
-
 }

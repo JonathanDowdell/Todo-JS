@@ -28,3 +28,7 @@
     text-decoration: line-through;
     color: #6c757d;
 }
+
+.mw-85 {
+    max-width: 85%;
+}

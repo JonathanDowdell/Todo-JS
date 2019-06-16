@@ -1,24 +1,27 @@
+import { firebase } from "./networking/FirebaseUtils";
 import { RegisterCard } from "./controller/RegisterCard";
 import { TodoController } from "./controller/TodoController";
-import { firebase } from "./networking/firebase";
-import { assignGlobalListeners } from "./utils/Listeners";
+import './utils/GlobalListeners';
 
 export class Initializer {
     constructor() {
 
+
         const registerView = new RegisterCard();
         const todoController = new TodoController();
-        assignGlobalListeners();
 
         firebase.auth().onAuthStateChanged(function (user) {
             if (user) {
                 // User is signed in.
                 console.log("Signed In");
-                // registerView.openView(false);
+                todoController.fetchData(user);
+                registerView.openView(false);
+                todoController.openView(true);
             } else {
                 // No user is signed in.
                 console.log("Not Signed In");
-                // registerView.openView(true);
+                registerView.openView(true);
+                todoController.openView(false);
             }
         });
 
