@@ -46,8 +46,8 @@ export const register = (email, username, password, callback) => {
     const uid = res.user.uid;
     console.log(res.user.uid);
     firebase.database().ref('users/' + uid).set({
-      username: username,
-      email: email
+      username: { value: username },
+      email: { value: email }
     }).catch((error) => {
       const errorMessage = error.message;
       console.log(`Error Message => ${errorMessage}`);
@@ -62,37 +62,44 @@ export const register = (email, username, password, callback) => {
   });
 };
 
-
-export const writeTodoToDatabase = (obj) => {
+export const writeTodoToDatabase = (obj, callback) => {
   const uid = firebase.auth().currentUser.uid;
   const todoUUID = obj.todoUUID
   delete obj.todoUUID;
   firebase.database().ref(`todos/` + `${uid}/` + `${todoUUID}/`).update(obj)
+  callback(true);
 };
 
 export const updateTodoInDatabase = (obj) => {
   const uid = firebase.auth().currentUser.uid;
   const todoUUID = obj.todoUUID;
   firebase.database().ref(`todos/` + `${uid}/` + `${todoUUID}/` + `todo/`).update({
-    value:obj.todoText
+    value: obj.todoText
   });
 }
 
-export const fetchDataFromDatabase = (user) => {
+export const fetchDataFromDatabase = (user, callback) => {
+
   firebase.database().ref(`todos/` + `${user.uid}/`).once('value', (snap) => {
     const data = snap.val();
+    console.log(data);
     for (const key in data) {
       if (data.hasOwnProperty(key)) {
         const element = data[key];
         element.todoUUID = key;
         let todoView = new TodoView(element);
-        $('.card-list').append(todoView.getHtml())
+        callback(false, todoView);
       }
     }
+  }).catch((error) => {
+    // Handle Errors
+    const errorMessage = error.message;
+    console.log(`Error Message => ${errorMessage}`);
+    callback(false);
   });
 };
 
-export const deleteDataFromDatabase = (todoID,callback) => {
+export const deleteDataFromDatabase = (todoID, callback) => {
   const uid = firebase.auth().currentUser.uid;
   firebase.database().ref('todos/' + `${uid}/` + `${todoID}/`).remove().catch((error) => {
     // Handle Errors
@@ -106,11 +113,23 @@ export const deleteDataFromDatabase = (todoID,callback) => {
 export const completeTodoFromDatabase = (todoID, completeStatus, callback) => {
   const uid = firebase.auth().currentUser.uid;
   firebase.database().ref('todos/' + `${uid}/` + `${todoID}/` + 'complete/').update({
-    value:!completeStatus
+    value: !completeStatus
   }).catch((error) => {
     // Handle Errors
     const errorMessage = error.message;
     console.log(`Error Message => ${errorMessage}`);
     callback(false);
   }).then(callback(true));
+};
+
+export const getUserName = (uid, callback) => {
+  firebase.database().ref(`users/` + `${uid}/` + 'username/').once('value', (snap) => {
+    callback(snap.val().value);
+  }).catch((error) => {
+    callback("");
+  });
+};
+
+export const signOut = () => {
+  firebase.auth().signOut()
 }

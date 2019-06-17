@@ -17,7 +17,18 @@ export class TodoController extends BaseController {
 
         // Methods
         this.fetchData = (user) => {
-            fetchDataFromDatabase(user)
+            fetchDataFromDatabase(user, (err, value) => {
+                if (err) {
+                    // Handle Error
+                } else {
+                    $('.spinner-container').fadeOut('slow');
+                    $('.spinner-border').fadeOut('slow', () => {
+                        $('.spinner-container').remove()
+                        $('.card-list').fadeIn()
+                    });
+                    $('.card-list').append(value.getHtml())
+                }
+            })
         }
 
         super.openView = (value) => {
@@ -31,25 +42,29 @@ export class TodoController extends BaseController {
                 document.querySelector('.card-list').classList.add('d-none');
                 document.querySelector('.navbar .navbar-brand').classList.add('d-none');
                 document.querySelector('.navbar .navbar').classList.add('d-none');
+                $('.card-list').empty()
             }
         }
 
         const addToDo = () => {
             const todoObj = {
                 todo: {
-                    value:this.todoInput.value
+                    value: this.todoInput.value
                 },
                 timestamp: {
-                    value:Date.now()
+                    value: Date.now()
                 },
                 complete: {
-                    value:false
+                    value: false
                 },
                 todoUUID: createUUID()
             }
             const todoView = new TodoView(todoObj);
             $(this.cardList).prepend(todoView.getHtml());
-            writeTodoToDatabase(todoObj);
+            writeTodoToDatabase(todoObj, (value) => {
+                $('.spinner-container').remove();
+                $(this.cardList).fadeIn('fast');
+            });
             $(this.todoInput).val("");
         }
         this.processInputBtn.addEventListener('click', addToDo)

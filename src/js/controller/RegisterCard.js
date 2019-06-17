@@ -92,9 +92,7 @@ export class RegisterCard extends BaseController {
         this.signInTab.addEventListener('click', this.displaySection);
         this.signUpTab.addEventListener('click', this.displaySection);
         this.processBtn.addEventListener('click', processData);
-
-
-
+        
     }
 
 

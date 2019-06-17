@@ -9,7 +9,6 @@ $(document).on('click', '.card-body  .content .mw-85', (e) => {
     // UUID
     const todoUUID = $(e.target).parent().parent().parent().next().children()[1].innerText;
     const completeStatus = $(e.target).parent().parent().hasClass('line-thru');
-    console.log($(e.target).parent().parent());
     if ($(e.target).attr('contenteditable') == 'false') { // Not In Edit Mode
         completeTodoFromDatabase(todoUUID, completeStatus, (value) => {
             if (completeStatus) { // Remove Complete Status
@@ -24,7 +23,6 @@ $(document).on('click', '.card-body  .content .mw-85', (e) => {
 // Delete List Item
 $(document).on('click', '.content .btn', (e) => {
     const postUUID = $(e.target).parentsUntil('.card').next().children('.post-id').text();
-    console.log(postUUID);
     deleteDataFromDatabase(postUUID, (value) => {
         if (value) {
             $(e.target).closest('.row').remove()
