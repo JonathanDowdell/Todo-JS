@@ -14,6 +14,8 @@
 
 * Webpack
 
+* Firebase
+
 * How easy jQuery can make things
 
 ## Could Work On?
