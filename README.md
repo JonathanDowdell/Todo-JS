@@ -18,6 +18,14 @@
 
 * How easy jQuery can make things
 
+## Resources/Dependencies
+
+* Bootstrap
+
+* Font Awesome
+
+* Webpack
+
 ## Could Work On?
 
 * The use of classes could be improved on.
