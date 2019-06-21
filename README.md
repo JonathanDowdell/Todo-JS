@@ -1,4 +1,4 @@
-#Project Description
+# Project Description
 
 > Todo App with JS, jQuery, Webpack, and Firebase 🔥
 
