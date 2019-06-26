@@ -5,6 +5,7 @@
 ## Install
 
 `npm install`
+`npm start`
 
 ## Why?
 
@@ -17,6 +18,8 @@
 * Firebase
 
 * How easy jQuery can make things
+
+* This all could have been done without webpack of course, but I can definitely see the advantages on a large scale project 
 
 ## Resources/Dependencies
 
@@ -31,6 +34,7 @@
 * The use of classes could be improved on.
 
 * Better Notes
+
 
 ## Goals After?
 
